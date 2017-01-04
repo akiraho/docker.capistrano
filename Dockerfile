@@ -13,10 +13,13 @@ RUN export RUBY_VERSION=ruby-2.3.3 && \
     echo ========== && \
     curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
     curl -sSL https://get.rvm.io | bash -s stable && \
+    cd /tmp && \
+    echo source \'http://rubygems.org\' > Gemfile
+    echo gem \'capistrano\', \'~\> $CAPISTRANO_VERSION\' >> Gemfile
+    echo gem \'capper\', \'~\> $CAPPER_VERSION\' >> Gemfile
     bash -lc ' \
       rvm install $RUBY_VERSION@$RUBY_GEMSET --create && \
       gem update --system && \
       gem install bundle && \
-      gem install capistrano -v $CAPISTRANO_VERSION && \
-      gem install capper -v $CAPPER_VERSION \
+      bundle \
     '
